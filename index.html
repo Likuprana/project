@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather app </title>
+<link rel="stylesheet" href="style.css">
+<script src="index.js"></script>
+</head>
+<body>
+    
+    <div class="container">
+
+        <div class="header">
+            <div class="search-box">
+                <input type="text" placeholder="Enter your city name" class="inputBox ">
+                <button  class="fa-solid fa-magnifying-glass" id="button-class"></button>
+            
+            </div>
+        </div>
+
+<div class="weather-body">
+    <img src="cloud.png" alt="weather image"
+    class="weather-image">
+    
+    <div class="weatherbox">
+        <p class="tempature">0<sup class="sup">°C</sup></p>
+        <p class="disperiction">rain</p>
+    </div>
+
+    <div class="weather-details" style="display: flex; justify-content: space-between;">
+
+        <div class="weather-details">
+
+            <div class="humidity"> 
+                <i class="fa-sharp fa-solid fa-droplet"></i>
+                <div class="text">
+                    <span id="humidity">40%</span>
+                    <p>Humidity</p>
+                </div>
+            </div>
+            <div class="windSpeed">
+                <i class="fa-solid fa-wind"></i>
+                <div class="text">
+                    <span id="windSpeed">15 mph</span>
+                    <p>WindSpeed</p>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+</div>  
+    </div>
+
+</body>
+<script src="https://kit.fontawesome.com/eb0ab85c71.js" crossorigin="anonymous">
+</script>
+
+<script>
+    const inputBox=document.querySelector(".inputBox")
+    const button=document.querySelector("#button-class")
+    const weatherimage=document.querySelector(".weather-image")
+    const tempature=document.querySelector(".tempature")
+    const disperiction=document.querySelector(".disperiction")
+    const humidity =document.querySelector("#humidity")
+    const windSpeed =document.querySelector("#windSpeed")
+
+
+async function checkweather(city){
+
+const API_key ="36f0fdd247c212b83d7dbc8a9e082399";
+
+const url=`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_key}`
+
+const weather_data = await fetch(`${url}`).then(respons=>respons.json());
+
+if(weather_data.cod === `404`){
+    weatherimage.src="404.png"
+return;}
+
+tempature.innerHTML=`${Math.round(weather_data.main.temp - 273.15)}°C`
+
+disperiction.innerHTML =`${weather_data.weather[0].description}`
+
+windSpeed.innerHTML=`${weather_data.wind.speed}Km/h`;
+
+humidity.innerHTML=`${weather_data.main.humidity}%`;
+
+
+if(weather_data.weather[0].main==="clear"){
+    weatherimage.src="clear.png"
+
+}else if(weather_data.weather[0].main==="cloud"){
+    weatherimage.src="cloud.png"
+
+}else if(weather_data.weather[0].main==="mist"){
+    weatherimage.src="mist.png"
+
+}else if(weather_data.weather[0].main==="rain"){
+    weatherimage.src="rain.png"
+    
+}else{weatherimage.src="snow.png"};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+button.addEventListener("click",()=>{
+checkweather(inputBox.value)
+});
+
+
+
+
+
+
+
+
+</script>
+</html>
